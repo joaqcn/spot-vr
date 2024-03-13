@@ -6,6 +6,7 @@ using Unity.Robotics;
 public class ModelMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
+    [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private ArticulationBody rootBody;
 
     void Update()
@@ -34,11 +35,29 @@ public class ModelMovement : MonoBehaviour
             movement += Vector3.back;
         }
 
+        if (Input.GetKey(KeyCode.R))
+        {
+            RotateModel(rotationSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            RotateModel(-rotationSpeed * Time.deltaTime);
+        }
+
         // Calculate the new position based on the input and speed
         Vector3 newPosition = rootBody.transform.position + movement * (speed * Time.deltaTime);
 
         // Teleport the root to the new position
         TeleportRoot(newPosition, rootBody.transform.rotation);
+    }
+
+    private void RotateModel(float rotationAmount)
+    {
+        // Calculate the new rotation based on the input rotation amount
+        Quaternion newRotation = Quaternion.Euler(0f, rotationAmount, 0f);
+        
+        // Set the new rotation directly on the root body
+        rootBody.transform.rotation *= newRotation;
     }
 
     // Your existing TeleportRoot function
