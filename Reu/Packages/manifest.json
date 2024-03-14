@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.animation.rigging": "1.1.1",
     "com.unity.collab-proxy": "2.3.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.robotics.urdf-importer": "https://github.com/Unity-Technologies/URDF-Importer.git?path=/com.unity.robotics.urdf-importer#v0.5.2",
