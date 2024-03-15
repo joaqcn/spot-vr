@@ -10,6 +10,7 @@ public class SpotController : MonoBehaviour
     public float strideHeight = 0.05f;     // Height of each step
     public float stepDuration = 1f;        // Duration of each step
     public float lowerLegRotationAngle = 30f; // Angle of rotation for the lower leg
+    public LayerMask groundLayer;          // Layer mask for the ground
 
     void Update()
     {
@@ -22,21 +23,34 @@ public class SpotController : MonoBehaviour
             // Calculate the phase of the leg movement based on the leg offset and current time
             float phase = (currentTime * (1f / stepDuration) + legOffsets[i]) % 1f;
 
-            // Calculate the rotation of the leg joints based on the phase
-            float x = Mathf.Sin(2f * Mathf.PI * phase) * strideLength;
-            Quaternion fullLegRotation = Quaternion.Euler(x * Mathf.Rad2Deg, 0f, 0f); // Rotate around the x-axis based on stride length
+            // Calculate the desired height of the leg based on the phase
+            float y = Mathf.Abs(Mathf.Sin(Mathf.PI * phase)) * strideHeight;
 
-            // Apply rotation to the full leg
-            fullLegs[i].localRotation = fullLegRotation;
+            // Calculate the position of the leg tip
+            Vector3 legTipPosition = fullLegs[i].position + fullLegs[i].up * y;
 
-            // Calculate the rotation of the lower leg relative to the upper leg's rotation
-            Quaternion lowerLegRotation = Quaternion.Inverse(upperLegs[i].rotation) * fullLegRotation;
+            // Raycast to detect the ground surface
+            RaycastHit hit;
+            if (Physics.Raycast(legTipPosition, -fullLegs[i].up, out hit, Mathf.Infinity, groundLayer))
+            {
+                // Adjust the position of the leg tip to touch the ground
+                legTipPosition = hit.point;
 
-            // Apply the angle of rotation for the lower leg
-            lowerLegRotation = Quaternion.Euler(0f, lowerLegRotationAngle, 0f); // Rotate around the Y-axis
+                // Calculate the rotation of the leg based on the surface normal
+                Quaternion legRotation = Quaternion.FromToRotation(fullLegs[i].up, hit.normal) * fullLegs[i].rotation;
 
-            // Apply rotation to the lower leg
-            lowerLegs[i].localRotation = lowerLegRotation;
+                // Apply rotation to the full leg
+                fullLegs[i].rotation = legRotation;
+
+                // Calculate the rotation of the lower leg relative to the upper leg's rotation
+                Quaternion lowerLegRotation = Quaternion.Inverse(upperLegs[i].rotation) * legRotation;
+
+                // Apply the angle of rotation for the lower leg
+                lowerLegRotation = Quaternion.Euler(lowerLegRotation.eulerAngles.x, lowerLegRotationAngle, lowerLegRotation.eulerAngles.z);
+
+                // Apply rotation to the lower leg
+                lowerLegs[i].rotation = lowerLegRotation;
+            }
         }
     }
 }
