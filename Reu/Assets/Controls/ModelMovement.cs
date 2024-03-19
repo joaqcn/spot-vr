@@ -50,9 +50,22 @@ public class ModelMovement : MonoBehaviour
 
     private Vector3 Movement(Vector3 movement)
     {
+        // Get the forward and right directions relative to the object's rotation
+        Vector3 forwardDirection = modelGameObject.transform.forward;
+        Vector3 rightDirection = modelGameObject.transform.right;
+
+        // Reset the y component to zero to ensure movement is only along the X-Z plane
+        forwardDirection.y = 0f;
+        rightDirection.y = 0f;
+
+        // Normalize to ensure consistent speed regardless of direction
+        forwardDirection.Normalize();
+        rightDirection.Normalize();
+
+        // Calculate movement based on input
         if (Input.GetKey(KeyCode.A))
         {
-            movement += Vector3.left;
+            movement += rightDirection; // Move left relative to the object's right direction
             animator.speed = 1;
         }
         else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
@@ -62,24 +75,29 @@ public class ModelMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
         {
-            movement += Vector3.right;
+            movement -= rightDirection; // Move right relative to the object's right direction
             animator.speed = 1;
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            movement += Vector3.forward;
+            movement -= forwardDirection; // Move forward relative to the object's forward direction
             animator.speed = 1;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            movement += Vector3.back;
+            movement += forwardDirection; // Move backward relative to the object's forward direction
             animator.speed = 1;
         }
 
         return movement;
     }
+
+
+
+
+
 
     private void RotateModel()
     {
@@ -94,4 +112,6 @@ public class ModelMovement : MonoBehaviour
             modelGameObject.transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
         }
     }
+
+
 }
