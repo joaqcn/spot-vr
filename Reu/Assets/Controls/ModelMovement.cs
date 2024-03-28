@@ -76,6 +76,7 @@ public class ModelMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             movement -= rightDirection; // Move right relative to the object's right direction
+            animator.Play("right_walking");
             animator.speed = 1;
         }
 
@@ -93,11 +94,6 @@ public class ModelMovement : MonoBehaviour
 
         return movement;
     }
-
-
-
-
-
 
     private void RotateModel()
     {

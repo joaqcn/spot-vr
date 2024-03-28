@@ -1543,7 +1543,6 @@ GameObject:
   - component: {fileID: 3246799258788880654}
   - component: {fileID: 3246799258788880655}
   - component: {fileID: 3246799258788880648}
-  - component: {fileID: 3246799258788880653}
   m_Layer: 0
   m_Name: spot
   m_TagString: robot
@@ -1606,38 +1605,6 @@ MonoBehaviour:
   torque: 100
   acceleration: 5
   highLightColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &3246799258788880653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246799258788880649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c090eaaa853542969cc52590a778d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jointChain: []
-  currentAngles: []
-  endEffectorRotation: {x: 0, y: 0, z: 0, w: 0}
-  endEffectorPosition:
-    e00: 0
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 0
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 0
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 0
 --- !u!1 &3246799258790662444
 GameObject:
   m_ObjectHideFlags: 0
